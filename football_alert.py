@@ -1,8 +1,8 @@
 import os, json, requests
 
-API_KEY = os.environ["47b5f5b947f21142a0af9f1ac680e324"]
-TG_TOKEN = os.environ["9135148835:AAGehZK8csmvBV-o2WnRB0y2Y020i26fXSE"]
-CHAT_ID = os.environ["985944227"]
+API_KEY = os.environ["API_KEY"]
+TG_TOKEN = os.environ["TG_TOKEN"]
+CHAT_ID = os.environ["CHAT_ID"]
 STATE = "sent.json"
 
 sent = set(json.load(open(STATE))) if os.path.exists(STATE) else set()
