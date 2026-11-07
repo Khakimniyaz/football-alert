@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 
 API_KEY = os.environ["API_KEY"]
 TG_TOKEN = os.environ["TG_TOKEN"]
-CHAT_ID = os.environ["CHAT_ID"]
+CHAT_ID = os.environ["CHAT_ID"]   # один или несколько id через запятую
 STATE = "sent.json"
 
 START_HOUR, END_HOUR = 8, 22   # окно работы по UTC (13:00-03:00 по Ташкенту)
@@ -13,12 +13,13 @@ PAUSE = 600                    # проверка раз в 10 минут
 sent = set(json.load(open(STATE))) if os.path.exists(STATE) else set()
 
 def notify(text):
-    r = requests.post(
-        f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
-        data={"chat_id": CHAT_ID, "text": text},
-    )
-    if not r.ok:
-        print("Ошибка Telegram:", r.text)
+    for chat in CHAT_ID.split(","):
+        r = requests.post(
+            f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
+            data={"chat_id": chat.strip(), "text": text},
+        )
+        if not r.ok:
+            print("Ошибка Telegram:", chat, r.text)
 
 def save_state():
     json.dump(sorted(sent), open(STATE, "w"))
